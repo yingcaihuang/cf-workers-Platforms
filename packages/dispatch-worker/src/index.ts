@@ -154,12 +154,7 @@ function renderTenantAppHtml(tenantId: string): string {
         <p class="sub">为租户 <code>${safeTenantId}</code> 提供创建、展示与完成任务操作。</p>
         <div class="grid">
           <form id="create-form" class="card" style="padding:14px;">
-            <label for="apiKey">API Key</label>
-            <div class="row">
-              <input id="apiKey" placeholder="输入 Bearer API Key" required />
-              <button type="button" class="ghost" id="saveKey">保存</button>
-            </div>
-            <label for="title" style="margin-top:10px;">标题</label>
+            <label for="title">标题</label>
             <input id="title" placeholder="例如：发布周报" required />
             <label for="description" style="margin-top:10px;">描述</label>
             <textarea id="description" placeholder="可选"></textarea>
@@ -185,34 +180,24 @@ function renderTenantAppHtml(tenantId: string): string {
 
     <script>
       const tenantId = ${JSON.stringify(tenantId)};
-      const keyStorage = "todo_api_key_" + tenantId;
 
-      const apiKeyInput = document.getElementById("apiKey");
       const titleInput = document.getElementById("title");
       const descriptionInput = document.getElementById("description");
       const createForm = document.getElementById("create-form");
       const refreshBtn = document.getElementById("refresh");
-      const saveKeyBtn = document.getElementById("saveKey");
       const errorEl = document.getElementById("error");
       const listEl = document.getElementById("list");
       const emptyEl = document.getElementById("empty");
       const countEl = document.getElementById("count");
-
-      apiKeyInput.value = localStorage.getItem(keyStorage) || "";
 
       function setError(message) {
         errorEl.textContent = message || "";
       }
 
       function authHeaders() {
-        const token = apiKeyInput.value.trim();
-        if (!token) {
-          throw new Error("请先输入 API Key");
-        }
         return {
           "Content-Type": "application/json",
           "X-Tenant-ID": tenantId,
-          Authorization: "Bearer " + token,
         };
       }
 
@@ -299,10 +284,6 @@ function renderTenantAppHtml(tenantId: string): string {
         }
       }
 
-      saveKeyBtn.addEventListener("click", () => {
-        localStorage.setItem(keyStorage, apiKeyInput.value.trim());
-        setError("API Key 已保存到浏览器本地");
-      });
       refreshBtn.addEventListener("click", loadTodos);
       createForm.addEventListener("submit", createTodo);
       listEl.addEventListener("change", (e) => toggleTodo(e.target));
@@ -391,11 +372,17 @@ export default {
         return jsonError(`Tenant '${tenantId}' not found`, 404);
       }
 
-      // Each tenant worker is deployed with its own static bindings.
-      // Wrangler 4 runtime no longer accepts dynamic `bindings` here.
-      const userWorker = env.DISPATCHER.get(tenantId);
+      // Inject the tenant API key automatically — tenants never see their own key.
+      const authedRequest = new Request(request, {
+        headers: (() => {
+          const h = new Headers(request.headers);
+          h.set("Authorization", `Bearer ${tenantMeta.apiKey}`);
+          return h;
+        })(),
+      });
 
-      return userWorker.fetch(request);
+      const userWorker = env.DISPATCHER.get(tenantId);
+      return userWorker.fetch(authedRequest);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Internal server error";
 
