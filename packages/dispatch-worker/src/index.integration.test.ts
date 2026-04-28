@@ -180,6 +180,16 @@ describe("9.1 End-to-end: Dispatch Worker → User Worker", () => {
     expect(body.error).toMatch(/X-Tenant-ID/i);
   });
 
+  it("serves tenant web UI on GET /app/:tenantId without auth headers", async () => {
+    const env = ctx.buildEnv();
+    const req = makeRequest("https://example.com/app/tenant-a");
+    const res = await dispatchWorker.fetch(req, env);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain("Tenant Todo Console");
+    expect(html).toContain("tenant-a");
+  });
+
   it("returns 404 when tenant does not exist in PLATFORM_KV (Req 2.2)", async () => {
     const env = ctx.buildEnv();
     const req = makeRequest("https://example.com/todos", {
@@ -486,6 +496,18 @@ describe("9.3 Custom domain routing", () => {
     expect(res.status).toBe(200);
     const todos = await res.json() as unknown[];
     expect(Array.isArray(todos)).toBe(true);
+  });
+
+  it("serves tenant web UI on custom domain root path", async () => {
+    const env = ctx.buildEnv();
+    await ctx.platformKv.put("domain:custom.example.com", "tenant-a");
+
+    const req = makeRequest("https://custom.example.com/");
+    const res = await dispatchWorker.fetch(req, env);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain("Tenant Todo Console");
+    expect(html).toContain("tenant-a");
   });
 
   it("creates a todo via custom domain and retrieves it (Req 2.5, 8.2)", async () => {

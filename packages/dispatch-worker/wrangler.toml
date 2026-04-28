@@ -1,6 +1,7 @@
 name = "todo-dispatch-worker"
 main = "src/index.ts"
 compatibility_date = "2024-06-10"
+workers_dev = true
 
 [observability.logs]
 enabled = true
@@ -16,3 +17,21 @@ id = "c12b8f6b000a41299583483a7a9979a2"
 [[dispatch_namespaces]]
 binding = "DISPATCHER"
 namespace = "todo-platform"
+
+[[routes]]
+pattern = "todoa.eastasia-gcr-nfr.cftenant.com/*"
+zone_name = "eastasia-gcr-nfr.cftenant.com"
+
+[[routes]]
+pattern = "todob.eastasia-gcr-nfr.cftenant.com/*"
+zone_name = "eastasia-gcr-nfr.cftenant.com"
+
+[[routes]]
+pattern = "todoa.eastasia-gcr-nfr.cftenant.com"
+zone_name = "eastasia-gcr-nfr.cftenant.com"
+custom_domain = true
+
+[[routes]]
+pattern = "todob.eastasia-gcr-nfr.cftenant.com"
+zone_name = "eastasia-gcr-nfr.cftenant.com"
+custom_domain = true
