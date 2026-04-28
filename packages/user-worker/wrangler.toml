@@ -1,0 +1,19 @@
+name = "todo-user-worker"
+main = "src/index.ts"
+compatibility_date = "2024-06-10"
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "todo-db"
+database_id = "placeholder"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "placeholder"

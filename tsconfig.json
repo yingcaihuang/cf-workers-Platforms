@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "types": ["@cloudflare/workers-types", "node"],
+    "lib": ["ES2022"],
+    "skipLibCheck": true,
+    "paths": {
+      "@todo-platform/shared": ["./packages/shared/src/types.ts"]
+    }
+  },
+  "include": ["packages/*/src/**/*.ts"],
+  "exclude": [
+    "packages/*/src/**/*.test.ts",
+    "packages/*/src/**/*.integration.test.ts"
+  ]
+}

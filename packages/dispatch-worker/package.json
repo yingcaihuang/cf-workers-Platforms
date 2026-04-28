@@ -1,0 +1,8 @@
+{
+  "name": "@todo-platform/dispatch-worker",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@todo-platform/shared": "*"
+  }
+}
