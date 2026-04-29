@@ -38,9 +38,14 @@ npm run deploy
 
 ## One-Click Deploy to Cloudflare
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yingcaihuang/cf-workers-Platforms)
+Dispatch Worker:
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yingcaihuang/cf-workers-Platforms/tree/main/packages/dispatch-worker)
 
-Replace the repository URL in the link above with your actual GitHub repository URL.
+Admin Worker:
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yingcaihuang/cf-workers-Platforms/tree/main/packages/admin-worker)
+
+Note: Deploy Button does not fully support deploying multiple Workers in one monorepo at once.
+Use the buttons above for single Worker quick deploy, or run `npm run deploy` for full platform deployment.
 
 ## Create Tenant
 ```bash
