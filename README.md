@@ -36,6 +36,12 @@ npm test
 npm run deploy
 ```
 
+## One-Click Deploy to Cloudflare
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/<your-org-or-user>/<your-repo>)
+
+Replace the repository URL in the link above with your actual GitHub repository URL.
+
 ## Create Tenant
 ```bash
 npm run tenant:create -- my-tenant https://todo-admin-worker.<your-subdomain>.workers.dev
