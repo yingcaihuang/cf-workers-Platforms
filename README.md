@@ -38,7 +38,7 @@ npm run deploy
 
 ## One-Click Deploy to Cloudflare
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/<your-org-or-user>/<your-repo>)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yingcaihuang/cf-workers-Platforms)
 
 Replace the repository URL in the link above with your actual GitHub repository URL.
 
